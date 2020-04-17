@@ -9,7 +9,6 @@ import UIKit
 import ARKit
 
 class AreaViewController: MeasureViewController {
-
     enum MeasureState {
         case lengthCalc
         case breadthCalc
@@ -94,7 +93,6 @@ class AreaViewController: MeasureViewController {
     //MARK: - IBActions
     
     @IBAction func addPoint(_ sender: UIButton) {
-        
         let pointLocation = view.convert(screenCenterPoint, to: sceneView)
         guard let hitResultPosition = sceneView.hitResult(forPoint: pointLocation)  else {
             return
@@ -109,6 +107,7 @@ class AreaViewController: MeasureViewController {
         if allPointNodes.count >= 4 {
             resetMeasurement()
         }
+        
         let nodes = nodesList(forState: currentState)
         
         let sphere = SCNSphere(color: nodeColor, radius: nodeRadius)
@@ -159,6 +158,8 @@ class AreaViewController: MeasureViewController {
                 floorRect.breadth = distance
                 breadthLabel.text = String(format: "%.2fm", distance)
                 areaLabel.text = String(format: "%.2fm", floorRect.area)
+                let grid = Grid(anchor: ARAnchor(transform: simd_float4x4(node.worldTransform)) as! ARPlaneAnchor)
+                node.addChildNode(grid)
             }
         }
     }
@@ -166,7 +167,6 @@ class AreaViewController: MeasureViewController {
 }
 
 extension AreaViewController: ARSCNViewDelegate {
-    
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         let dotNodes = allPointNodes as! [SCNNode]
         if dotNodes.count > 0, let currentCameraPosition = self.sceneView.pointOfView {
@@ -177,7 +177,7 @@ extension AreaViewController: ARSCNViewDelegate {
         if let realTimeLineNode = self.realTimeLineNode,
             let hitResultPosition = sceneView.hitResult(forPoint: screenCenterPoint),
             let startNode = self.nodesList(forState: self.currentState).firstObject as? SCNNode {
-            realTimeLineNode.updateNode(vectorA: startNode.position, vectorB: hitResultPosition, color: nil)
+            realTimeLineNode.updateNode(vectorA: startNode.position, vectorB: hitResultPosition, color: .gray)
             
             let distance = sceneView.distance(betweenPoints: startNode.position, point2: hitResultPosition)
             let label = currentState == .lengthCalc ? lengthLabel : breadthLabel

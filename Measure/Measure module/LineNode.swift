@@ -13,6 +13,7 @@ class LineNode: SCNNode {
     
     let lineThickness = CGFloat(0.001)
     let radius = CGFloat(0.1)
+    
     private var boxGeometry: SCNBox!
     private var nodeLine: SCNNode!
 
@@ -58,12 +59,13 @@ class LineNode: SCNNode {
         if let vectorA = vectorA, let vectorB = vectorB {
             let height = self.distance(from: vectorA, to: vectorB)
             boxGeometry.height = height
-            nodeLine.position.y = Float(-height/2) + 0.001
+//            self.nodeLine.position.y = Float(-height/2) + 0.001
             
             let orientationNode = SCNNode()
             orientationNode.position = vectorB
             self.constraints = [SCNLookAtConstraint(target: orientationNode)]
         }
+        
         if let color = color {
             let material = SCNMaterial()
             material.diffuse.contents = color

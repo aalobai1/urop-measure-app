@@ -17,6 +17,7 @@
 		132961DB225B4AD5003BCC23 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 132961CE225B4AD5003BCC23 /* LaunchScreen.storyboard */; };
 		132961DC225B4AD5003BCC23 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 132961D0225B4AD5003BCC23 /* Main.storyboard */; };
 		132961DD225B4AD5003BCC23 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 132961D2225B4AD5003BCC23 /* AppDelegate.swift */; };
+		CE2756D724494BAF00DC9099 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2756D624494BAF00DC9099 /* Grid.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		132961D1225B4AD5003BCC23 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		132961D2225B4AD5003BCC23 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		132961D3225B4AD5003BCC23 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CE2756D624494BAF00DC9099 /* Grid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +82,7 @@
 				132961C8225B4AD5003BCC23 /* MeasureViewController.swift */,
 				132961C9225B4AD5003BCC23 /* MeasureSCNView.swift */,
 				132961CA225B4AD5003BCC23 /* SCNSphere+Init.swift */,
+				CE2756D624494BAF00DC9099 /* Grid.swift */,
 				132961CB225B4AD5003BCC23 /* AreaViewController.swift */,
 				132961CC225B4AD5003BCC23 /* DistanceMeasureViewController.swift */,
 				132961CD225B4AD5003BCC23 /* LineNode.swift */,
@@ -161,6 +164,7 @@
 				132961D7225B4AD5003BCC23 /* SCNSphere+Init.swift in Sources */,
 				132961DA225B4AD5003BCC23 /* LineNode.swift in Sources */,
 				132961D9225B4AD5003BCC23 /* DistanceMeasureViewController.swift in Sources */,
+				CE2756D724494BAF00DC9099 /* Grid.swift in Sources */,
 				132961D6225B4AD5003BCC23 /* MeasureSCNView.swift in Sources */,
 				132961DD225B4AD5003BCC23 /* AppDelegate.swift in Sources */,
 				132961D5225B4AD5003BCC23 /* MeasureViewController.swift in Sources */,
@@ -310,16 +314,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Y94SWT95X2;
 				INFOPLIST_FILE = "$(SRCROOT)/Measure/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.AB.Measure;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gill.Measure;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -331,16 +335,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Y94SWT95X2;
 				INFOPLIST_FILE = "$(SRCROOT)/Measure/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.AB.Measure;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gill.Measure;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
