@@ -9,6 +9,7 @@ import UIKit
 import ARKit
 
 class AreaViewController: MeasureViewController {
+    
     enum MeasureState {
         case lengthCalc
         case breadthCalc
@@ -25,6 +26,7 @@ class AreaViewController: MeasureViewController {
     }
     
     var floorRect = FloorRect(length: 0, breadth: 0)
+    var grids = [Grid]()
     var lengthNodes = NSMutableArray()
     var breadthNodes = NSMutableArray()
     var lineNodes = NSMutableArray()
@@ -41,7 +43,6 @@ class AreaViewController: MeasureViewController {
         }
     }
     
-   
     @IBOutlet weak var areaLabel: UILabel!
     @IBOutlet weak var breadthLabel: UILabel!
     @IBOutlet weak var lengthLabel: UILabel!
@@ -49,12 +50,14 @@ class AreaViewController: MeasureViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         sceneView.delegate = self
+        sceneView.showsStatistics = true
+        sceneView.debugOptions = ARSCNDebugOptions.showFeaturePoints
         lengthLabel.textColor = nodeColor(forState: .lengthCalc, alphaComponent: 1)
         breadthLabel.textColor = nodeColor(forState: .breadthCalc, alphaComponent: 1)
     }
     
     //MARK: - Private helper methods
-
+    
     private func nodeColor(forState state: MeasureState, alphaComponent: CGFloat) -> UIColor {
         switch state {
         case .lengthCalc:
@@ -64,7 +67,7 @@ class AreaViewController: MeasureViewController {
         }
     }
     
-
+    
     private func nodesList(forState state: MeasureState) -> NSMutableArray {
         switch state {
         case .lengthCalc:
@@ -104,6 +107,7 @@ class AreaViewController: MeasureViewController {
             sender.isUserInteractionEnabled = true
         }
         
+        
         if allPointNodes.count >= 4 {
             resetMeasurement()
         }
@@ -133,6 +137,8 @@ class AreaViewController: MeasureViewController {
             let startNode = nodes[0] as! SCNNode
             let endNode = nodes[1]  as! SCNNode
             
+            
+            
             // Create a node line between the nodes
             let measureLine = LineNode(from: startNode.position,
                                        to: endNode.position,
@@ -158,12 +164,10 @@ class AreaViewController: MeasureViewController {
                 floorRect.breadth = distance
                 breadthLabel.text = String(format: "%.2fm", distance)
                 areaLabel.text = String(format: "%.2fm", floorRect.area)
-                let grid = Grid(anchor: ARAnchor(transform: simd_float4x4(node.worldTransform)) as! ARPlaneAnchor)
-                node.addChildNode(grid)
+                
             }
         }
     }
-    
 }
 
 extension AreaViewController: ARSCNViewDelegate {
@@ -186,6 +190,76 @@ extension AreaViewController: ARSCNViewDelegate {
                 label?.textColor = self.nodeColor
             }
         }
+    }
+    
+    func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+        var planeAnchor: ARPlaneAnchor
+        if #available(iOS 11.3, *) {
+            guard let planeAnchor = anchor as? ARPlaneAnchor, planeAnchor.alignment == .vertical else { return }
+        } else {
+            guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
+        }
+           let grid = Grid(anchor: planeAnchor)
+           self.grids.append(grid)
+           node.addChildNode(grid)
+        
+        
+//        // Place content only for anchors found by plane detection.
+//        guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
+//
+//        // Create a custom object to visualize the plane geometry and extent.
+//        let plane = Plane(anchor: planeAnchor, in: sceneView)
+//
+//        // Add the visualization to the ARKit-managed node so that it tracks
+//        // changes in the plane anchor as plane estimation continues.
+//        node.addChildNode(plane)
+        
+//        if allPointNodes.count == 4 {
+//            // 1
+//            guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
+//
+//            // 2
+//            let width = CGFloat(planeAnchor.extent.x)
+//            let height = CGFloat(planeAnchor.extent.z)
+//            let plane = SCNPlane(width: width, height: height)
+//
+//            // 3
+//            plane.materials.first?.diffuse.contents = UIColor.blue
+//
+//            // 4
+//            let planeNode = SCNNode(geometry: plane)
+//
+//            // 5
+//            let x = CGFloat(planeAnchor.center.x)
+//            let y = CGFloat(planeAnchor.center.y)
+//            let z = CGFloat(planeAnchor.center.z)
+//            planeNode.position = SCNVector3(x,y,z)
+//            planeNode.eulerAngles.x = -.pi / 2
+//
+//            // 6
+//            node.addChildNode(planeNode)
+//        }
+    }
+    
+    func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
+        var planeAnchor: ARPlaneAnchor
+        if #available(iOS 11.3, *) {
+            guard let foundAnchor = anchor as? ARPlaneAnchor, planeAnchor.alignment == .vertical else { return }
+            planeAnchor = foundAnchor
+        } else {
+            guard let foundAnchor = anchor as? ARPlaneAnchor else { return } // SET THE ALIGNMENT
+            planeAnchor = foundAnchor
+        }
+        
+        let grid = self.grids.filter { grid in
+            return grid.anchor.identifier == planeAnchor.identifier
+            }.first
+
+        guard let foundGrid = grid else {
+            return
+        }
+
+        foundGrid.update(anchor: planeAnchor)
     }
     
     func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
